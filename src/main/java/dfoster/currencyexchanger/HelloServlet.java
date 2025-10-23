@@ -38,6 +38,7 @@ public class HelloServlet extends HttpServlet {
                     resultSet.getString("FullName") + "\t" +
                     resultSet.getString("Sign") + "</h2>\t\n");
             }
+            statement.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
