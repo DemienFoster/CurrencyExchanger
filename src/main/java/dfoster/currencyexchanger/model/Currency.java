@@ -1,17 +1,15 @@
 package dfoster.currencyexchanger.model;
 
 public class Currency {
-    private Long id;
+
+
+    private static Long id = 0L;
     private String code;
-    private String fullName;
-    private String Sign;
+    private String name;
+    private String sign;
 
     public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+        return ++id;
     }
 
     public String getCode() {
@@ -22,20 +20,20 @@ public class Currency {
         this.code = code;
     }
 
-    public String getFullName() {
-        return fullName;
+    public String getName() {
+        return name;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getSign() {
-        return Sign;
+        return sign;
     }
 
     public void setSign(String sign) {
-        Sign = sign;
+        this.sign = sign;
     }
 
     @Override
@@ -43,8 +41,8 @@ public class Currency {
         return "Currency{" +
                 "id=" + id +
                 ", code='" + code + '\'' +
-                ", fullName='" + fullName + '\'' +
-                ", Sign='" + Sign + '\'' +
+                ", fullName='" + name + '\'' +
+                ", Sign='" + sign + '\'' +
                 '}';
     }
 }
