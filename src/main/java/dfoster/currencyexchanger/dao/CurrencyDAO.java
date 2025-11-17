@@ -3,31 +3,18 @@ package dfoster.currencyexchanger.dao;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import dfoster.currencyexchanger.model.Currency;
+import dfoster.currencyexchanger.entity.Currency;
+import dfoster.currencyexchanger.utils.DBConnection;
 
 public class CurrencyDAO {
 
-    private static final String urlConnection = "jdbc:sqlite:C:/Users/demf/Desktop/CurrencyExchanger/currency_exchange.db";
-    private static Connection connection;
-    static {
-        try {
-            Class.forName("org.sqlite.JDBC");
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            connection = DriverManager.getConnection(urlConnection);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
 
-    }
     public List<Currency> getCurrencies() {
         List<Currency> currencies = new ArrayList<Currency>();
 
 
         try {
-            Statement statement = connection.createStatement();
+            Statement statement = DBConnection.getConnection().createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM Currencies");
             while (resultSet.next()) {
                 Currency currency = new Currency();
@@ -46,12 +33,14 @@ public class CurrencyDAO {
     public void addCurrencies(Currency currency) {
 
         try {
-            Statement statement = connection.createStatement();
-            String query = "insert into Currencies values (" + Long.toString(currency.getId()) + ", "
-                    + "\'" + currency.getCode() + "\'" +  ", "
-                    + "\'" + currency.getName() + "\'"+ ", "
-                    + "\'" + currency.getSign() + "\'"+ ")";
-            statement.executeUpdate(query);
+            String querry = "insert into Currencies (code, fullname, sign) VALUES (?, ?, ?)";
+            try (PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(querry)) {
+                preparedStatement.setString(1, currency.getCode());
+                preparedStatement.setString(2, currency.getName());
+                preparedStatement.setString(3, currency.getSign());
+
+                preparedStatement.executeUpdate();
+            }
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -60,20 +49,5 @@ public class CurrencyDAO {
 
     }
 
-     /*
-        try {
 
-
-
-        while (resultSet.next()) {
-            out.print("<h2>" + resultSet.getString("ID") + "\t" +
-                    resultSet.getString("Code") + "\t" +
-                    resultSet.getString("FullName") + "\t" +
-                    resultSet.getString("Sign") + "</h2>\t\n");
-        }
-        statement.close();
-    } catch (
-    SQLException e) {
-        throw new RuntimeException(e);
-    }*/
 }

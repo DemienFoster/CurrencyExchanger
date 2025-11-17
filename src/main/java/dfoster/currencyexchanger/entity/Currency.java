@@ -1,15 +1,19 @@
-package dfoster.currencyexchanger.model;
+package dfoster.currencyexchanger.entity;
+
+import java.util.Objects;
 
 public class Currency {
 
-
-    private static Long id = 0L;
+    private final Long id = 0L;
     private String code;
     private String name;
     private String sign;
 
+    public Currency() {
+    }
+
     public Long getId() {
-        return ++id;
+        return id;
     }
 
     public String getCode() {
@@ -34,6 +38,18 @@ public class Currency {
 
     public void setSign(String sign) {
         this.sign = sign;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Currency currency = (Currency) o;
+        return Objects.equals(id, currency.id) && Objects.equals(code, currency.code) && Objects.equals(name, currency.name) && Objects.equals(sign, currency.sign);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, code, name, sign);
     }
 
     @Override

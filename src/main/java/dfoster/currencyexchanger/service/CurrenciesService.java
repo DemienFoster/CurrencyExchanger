@@ -1,28 +1,22 @@
-package dfoster.currencyexchanger.controller;
+package dfoster.currencyexchanger.service;
 
 import com.google.gson.Gson;
 import dfoster.currencyexchanger.dao.CurrencyDAO;
-import dfoster.currencyexchanger.model.Currency;
+import dfoster.currencyexchanger.entity.Currency;
 
 import java.io.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 
-@WebServlet("/currencies")
-public class CurrenciesServlet extends HttpServlet {
+@WebServlet("/currencies/*")
+public class CurrenciesService extends HttpServlet {
     private String message;
 
     public void init() {}
     public void doPost(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("application/json");
         response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-        response.setHeader("Access-Control-Max-Age", "86400");
-        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
-            response.setStatus(HttpServletResponse.SC_OK);
-            return;
-        }
+        System.out.println("do Post " + request.getPathInfo());
 
         response.setStatus(HttpServletResponse.SC_OK);
         Currency currency = new Currency();
@@ -36,13 +30,8 @@ public class CurrenciesServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-        response.setHeader("Access-Control-Max-Age", "86400");
-        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
-            response.setStatus(HttpServletResponse.SC_OK);
-            return;
-        }
+        System.out.println("do Get " + request.getPathInfo());
+
 
         response.setStatus(HttpServletResponse.SC_OK);
 
