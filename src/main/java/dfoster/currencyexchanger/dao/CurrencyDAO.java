@@ -3,21 +3,24 @@ package dfoster.currencyexchanger.dao;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 import dfoster.currencyexchanger.entity.Currency;
 import dfoster.currencyexchanger.utils.DBConnection;
 
-public class CurrencyDAO {
-
-
-    public List<Currency> getCurrencies() {
+public class CurrencyDAO<Long, Currency> implements DAO{
+    Currency currency;
+    @Override
+    public List<Currency> findAll() {
         List<Currency> currencies = new ArrayList<Currency>();
 
 
         try {
-            Statement statement = DBConnection.getConnection().createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM Currencies");
+            ResultSet resultSet;
+            try (Statement statement = DBConnection.getConnection().createStatement()) {
+                resultSet = statement.executeQuery("SELECT * FROM Currencies");
+            }
             while (resultSet.next()) {
-                Currency currency = new Currency();
                 currencies.add(currency);
                 currency.setCode(resultSet.getString("Code"));
                 currency.setName(resultSet.getString("FullName"));
@@ -30,11 +33,26 @@ public class CurrencyDAO {
         return currencies;
     }
 
-    public void addCurrencies(Currency currency) {
+    @Override
+    public Optional findById(Long id) {
+        return Optional.empty();
+    }
+
+    /*@Override
+    public boolean deleteById(Object id) {
+        return false;
+    }*/
+
+    @Override
+    public void save(Currency currency) {
+
+    }
+    @Override
+    public void update(Currency currency) {
 
         try {
-            String querry = "insert into Currencies (code, fullname, sign) VALUES (?, ?, ?)";
-            try (PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(querry)) {
+            String query = "insert into Currencies (code, fullname, sign) VALUES (?, ?, ?)";
+            try (PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(query)) {
                 preparedStatement.setString(1, currency.getCode());
                 preparedStatement.setString(2, currency.getName());
                 preparedStatement.setString(3, currency.getSign());

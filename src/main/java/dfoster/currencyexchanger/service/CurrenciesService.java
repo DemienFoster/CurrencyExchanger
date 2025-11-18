@@ -12,7 +12,8 @@ import javax.servlet.annotation.*;
 public class CurrenciesService extends HttpServlet {
     private String message;
 
-    public void init() {}
+
+
     public void doPost(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("application/json");
         response.setHeader("Access-Control-Allow-Origin", "*");
@@ -24,7 +25,7 @@ public class CurrenciesService extends HttpServlet {
         currency.setName(request.getParameter("name"));
         currency.setSign(request.getParameter("sign"));
         CurrencyDAO currencyDAO = new CurrencyDAO();
-        currencyDAO.addCurrencies(currency);
+        currencyDAO.update(currency);
 
     }
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -36,8 +37,7 @@ public class CurrenciesService extends HttpServlet {
         response.setStatus(HttpServletResponse.SC_OK);
 
 
-        new Gson().toJson(new CurrencyDAO().getCurrencies(), response.getWriter());
+        new Gson().toJson(new CurrencyDAO().findAll(), response.getWriter());
     }
-    public void destroy() {
-    }
+
 }
